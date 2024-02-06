@@ -8,11 +8,22 @@ public class MovieCollection
 {
     private ArrayList<Movie> movies;
     private Scanner scanner;
+    private ArrayList<String> everyoneEver;
 
     public MovieCollection(String fileName)
     {
         importMovieList(fileName);
         scanner = new Scanner(System.in);
+        ArrayList<String> everyone = new ArrayList<String>();
+        for (Movie movie : movies) {
+            String[] everyoneInThatMovie = movie.getCast().split("\\|");
+            for (String actor : everyoneInThatMovie) {
+                if (!everyone.contains(actor)) {
+                    everyone.add(actor);
+                }
+            }
+        }
+        everyoneEver = everyone;
     }
 
     public ArrayList<Movie> getMovies()
@@ -148,6 +159,18 @@ public class MovieCollection
         }
     }
 
+    private void sortActors(ArrayList<String> sortNOW) {
+        for (int i = 1; i < sortNOW.size(); i++) {
+            String name = sortNOW.get(i);
+            int possibleIndex = i;
+            while (possibleIndex > 0 && name.compareTo(sortNOW.get(possibleIndex - 1)) < 0) {
+                sortNOW.set(possibleIndex, sortNOW.get(possibleIndex - 1));
+                possibleIndex --;
+            }
+            sortNOW.set(possibleIndex, name);
+        }
+    }
+
     private void displayMovieInfo(Movie movie)
     {
         System.out.println();
@@ -164,8 +187,49 @@ public class MovieCollection
 
     private void searchCast()
     {
-
+        System.out.print("Enter an actor: ");
+        String actors = scanner.nextLine();
+        actors = actors.toLowerCase();
+        ArrayList<String> actorsWithThatName = new ArrayList<String>();
+        for (String actor : everyoneEver) {
+            String name = actor.toLowerCase();
+            if (name.contains(actors)) {
+                actorsWithThatName.add(actor);
+            }
+        }
+        sortActors(actorsWithThatName);
+        for (int i = 0; i < actorsWithThatName.size(); i++) {
+            String name = actorsWithThatName.get(i);
+            int number = i + 1;
+            System.out.println("" + number + ". " + name);
+        }
+        System.out.println("Which actor are you talking about?");
+        System.out.print("Enter number: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        String nameTheyWant = actorsWithThatName.get(choice - 1);
+        ArrayList<Movie> moviesWithThatActor = new ArrayList<Movie>();
+        for (Movie movie : movies) {
+            if (movie.getCast().contains(nameTheyWant)) {
+                moviesWithThatActor.add(movie);
+            }
+        }
+        sortResults(moviesWithThatActor);
+        for (int i = 0; i < moviesWithThatActor.size(); i++) {
+            String movie = moviesWithThatActor.get(i).getTitle();
+            int number = i + 1;
+            System.out.println("" + number + ". " + movie);
+        }
+        System.out.println("Which movie do you want to learn more about?");
+        System.out.print("Enter number: ");
+        int movieChoice = scanner.nextInt();
+        scanner.nextLine();
+        Movie selectedMovie = moviesWithThatActor.get(movieChoice - 1);
+        displayMovieInfo(selectedMovie);
+        System.out.println("\n ** Press Enter to Return to Main Menu **");
+        scanner.nextLine();
     }
+
 
     private void searchKeywords()
     {
