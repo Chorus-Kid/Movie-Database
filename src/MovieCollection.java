@@ -9,6 +9,7 @@ public class MovieCollection
     private ArrayList<Movie> movies;
     private Scanner scanner;
     private ArrayList<String> everyoneEver;
+    private ArrayList<String> genreList;
 
     public MovieCollection(String fileName)
     {
@@ -24,6 +25,16 @@ public class MovieCollection
             }
         }
         everyoneEver = everyone;
+        ArrayList<String> genres = new ArrayList<String>();
+        for (Movie movie : movies) {
+            String[] allTheGenres = movie.getGenres().split("\\|");
+            for (String genre : allTheGenres) {
+                if (!genres.contains(genre)) {
+                    genres.add(genre);
+                }
+            }
+        }
+
     }
 
     public ArrayList<Movie> getMovies()
