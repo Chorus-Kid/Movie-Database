@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class MovieCollection
 {
@@ -10,6 +12,7 @@ public class MovieCollection
     private Scanner scanner;
     private ArrayList<String> everyoneEver;
     private ArrayList<String> genreList;
+    private ArrayList<Movie> moviesOfAllTime;
 
     public MovieCollection(String fileName)
     {
@@ -36,6 +39,21 @@ public class MovieCollection
         }
         sortGeneral(genres);
         genreList = genres;
+        ArrayList<Movie> mmmyes = new ArrayList<Movie>();
+        Movie topMovieForNow = movies.get(0);
+        mmmyes.add(topMovieForNow);
+        int number = movies.size() - 1;
+        while (number > 0) {
+            for (int i = 0; i < movies.size(); i++) {
+                if (movies.get(i).getUserRating() > topMovieForNow.getUserRating()) {
+                    mmmyes.add(0,movies.get(i));
+                    topMovieForNow = movies.get(i);
+                }
+                else {
+
+                }
+            }
+        }
     }
 
     public ArrayList<Movie> getMovies()
@@ -180,6 +198,12 @@ public class MovieCollection
                 possibleIndex --;
             }
             sortNOW.set(possibleIndex, name);
+        }
+    }
+
+    private void sortReviews(Movie[] justForTheTop50ngl) {
+        for (int i = 0; i < justForTheTop50ngl.length; i++) {
+
         }
     }
 
