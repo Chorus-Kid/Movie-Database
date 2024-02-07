@@ -34,7 +34,8 @@ public class MovieCollection
                 }
             }
         }
-
+        sortGeneral(genres);
+        genreList = genres;
     }
 
     public ArrayList<Movie> getMovies()
@@ -170,7 +171,7 @@ public class MovieCollection
         }
     }
 
-    private void sortActors(ArrayList<String> sortNOW) {
+    private void sortGeneral(ArrayList<String> sortNOW) {
         for (int i = 1; i < sortNOW.size(); i++) {
             String name = sortNOW.get(i);
             int possibleIndex = i;
@@ -208,7 +209,7 @@ public class MovieCollection
                 actorsWithThatName.add(actor);
             }
         }
-        sortActors(actorsWithThatName);
+        sortGeneral(actorsWithThatName);
         for (int i = 0; i < actorsWithThatName.size(); i++) {
             String name = actorsWithThatName.get(i);
             int number = i + 1;
@@ -273,7 +274,36 @@ public class MovieCollection
 
     private void listGenres()
     {
-
+        for (int i = 0; i < genreList.size(); i++) {
+            String genre = genreList.get(i);
+            int number = i + 1;
+            System.out.println("" + number + ". " + genre);
+        }
+        System.out.println("Which genre do you want to search movies for?");
+        System.out.print("Enter number: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        String genreTheyWant = genreList.get(choice - 1);
+        ArrayList<Movie> moviesOfThatGenre = new ArrayList<Movie>();
+        for (Movie movie : movies) {
+            if (movie.getGenres().equals(genreTheyWant)) {
+                moviesOfThatGenre.add(movie);
+            }
+        }
+        sortResults(moviesOfThatGenre);
+        for (int i = 0; i < moviesOfThatGenre.size(); i++) {
+            String name = moviesOfThatGenre.get(i).getTitle();
+            int number = i + 1;
+            System.out.println("" + number + ". " + name);
+        }
+        System.out.println("Which movie do you want to learn more about?");
+        System.out.print("Enter number: ");
+        int decision = scanner.nextInt();
+        scanner.nextLine();
+        Movie selectedMovie = moviesOfThatGenre.get(decision - 1);
+        displayMovieInfo(selectedMovie);
+        System.out.println("\n ** Press Enter to Return to Main Menu");
+        scanner.nextLine();
     }
 
     private void listHighestRated()
