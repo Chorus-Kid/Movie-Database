@@ -39,18 +39,13 @@ public class MovieCollection
         }
         sortGeneral(genres);
         genreList = genres;
-        ArrayList<Movie> mmmyes = new ArrayList<Movie>();
-        Movie topMovieForNow = movies.get(0);
-        mmmyes.add(topMovieForNow);
-        int number = movies.size() - 1;
-        while (number > 0) {
-            for (int i = 0; i < movies.size(); i++) {
-                if (movies.get(i).getUserRating() > topMovieForNow.getUserRating()) {
-                    mmmyes.add(0,movies.get(i));
-                    topMovieForNow = movies.get(i);
-                }
-                else {
-
+        for (int i = 0; i < movies.size(); i++) {
+            for (int j = 1; j < movies.size(); j++) {
+                Movie movieOne = movies.get(i);
+                Movie movieTwo = movies.get(j);
+                if (movieOne.getUserRating() > movieTwo.getUserRating()) {
+                    movies.set(i, movieTwo);
+                    movies.set(j, movieOne);
                 }
             }
         }
