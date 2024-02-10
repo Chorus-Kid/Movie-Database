@@ -39,16 +39,25 @@ public class MovieCollection
         }
         sortGeneral(genres);
         genreList = genres;
-        for (int i = 0; i < movies.size(); i++) {
-            for (int j = 1; j < movies.size(); j++) {
-                Movie movieOne = movies.get(i);
-                Movie movieTwo = movies.get(j);
+        ArrayList<Movie> sortedByRatings = new ArrayList<Movie>();
+        for (Movie movie : movies) {
+            sortedByRatings.add(movie);
+        }
+        for (int i = 0; i < sortedByRatings.size(); i++) {
+            for (int j = 1; j < sortedByRatings.size(); j++) {
+                Movie movieOne = sortedByRatings.get(i);
+                Movie movieTwo = sortedByRatings.get(j);
                 if (movieOne.getUserRating() > movieTwo.getUserRating()) {
-                    movies.set(i, movieTwo);
-                    movies.set(j, movieOne);
+                    sortedByRatings.set(i, movieTwo);
+                    sortedByRatings.set(j, movieOne);
                 }
             }
         }
+        sortedByRatings.remove(0);
+        while (sortedByRatings.size() > 50) {
+            sortedByRatings.remove(50);
+        }
+        moviesOfAllTime = sortedByRatings;
     }
 
     public ArrayList<Movie> getMovies()
@@ -327,7 +336,19 @@ public class MovieCollection
 
     private void listHighestRated()
     {
-
+        for (int i = 0; i < moviesOfAllTime.size(); i++) {
+            String name = moviesOfAllTime.get(i).getTitle();
+            int number = i + 1;
+            System.out.println("" + number + ". " + name + " (Ratings: " + moviesOfAllTime.get(i).getUserRating() + ")");
+        }
+        System.out.println("Which movie do you want to learn more about?");
+        System.out.print("Enter number: ");
+        int decision = scanner.nextInt();
+        scanner.nextLine();
+        Movie selectedMovie = moviesOfAllTime.get(decision - 1);
+        displayMovieInfo(selectedMovie);
+        System.out.println("\n ** Press Enter to Return to Main Menu");
+        scanner.nextLine();
     }
 
     private void listHighestRevenue()
